@@ -1,4 +1,5 @@
 import { useTransactionList } from "../../hooks/transactions/useTransactionList";
+import { TransactionRow } from "./TransactionRow/TransactionRow";
 
 export function TransactionList() {
 	const {
@@ -11,5 +12,5 @@ export function TransactionList() {
 	if (isError) return <h1>{error.name}</h1>;
 	if (isLoading || !transactions) return <h1>Loading...</h1>;
 
-	return transactions.map((t) => <h2 key={t.id}>{t.description}</h2>);
+	return transactions.map((t) => <TransactionRow key={t.id} transaction={t} />);
 }
