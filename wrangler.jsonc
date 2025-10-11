@@ -6,13 +6,20 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "spending-tracker",
 	"main": "worker/index.ts",
-	"compatibility_date": "2025-10-11",
+	"compatibility_date": "2025-10-08",
 	"assets": {
 		"not_found_handling": "single-page-application"
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	"d1_databases": [
+		{
+			"binding": "spending_tracker",
+			"database_name": "spending-tracker",
+			"database_id": "4b0397db-4322-4943-ad46-5f2cb9d0520a"
+		}
+	]
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
