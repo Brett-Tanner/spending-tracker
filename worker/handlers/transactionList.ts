@@ -1,7 +1,7 @@
 const baseListQuery = `
   SELECT
     transactions.amount, transactions.date, transactions.description,
-	users.name AS user, categories.name AS category
+	transactions.id, users.name AS user, categories.name AS category
   FROM transactions
   INNER JOIN categories ON categories.id = category_id
   INNER JOIN users ON users.id = user_id
