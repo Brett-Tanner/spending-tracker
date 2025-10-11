@@ -1,11 +1,15 @@
-const transactionStatuses = ["loading", "error", "completed"] as const;
+type TransactionStatus = "completed" | "loading" | "error";
 
-export interface Transaction {
+export interface RawTransaction {
 	amount: number;
 	category: string;
-	date: Date;
+	date: string;
 	description: string;
 	id: number;
 	user: string;
-	status: keyof typeof transactionStatuses;
+}
+
+export interface Transaction extends Omit<RawTransaction, "date"> {
+	date: Date;
+	status: TransactionStatus;
 }
