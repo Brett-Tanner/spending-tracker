@@ -8,6 +8,7 @@ export function Loading() {
 			role="status"
 			aria-label="Loading"
 			fill="currentColor"
+			className="spin"
 		>
 			<path d="M216-192v-72h74q-45-40-71.5-95.5T192-480q0-101 61-177.5T408-758v75q-63 23-103.5 77.5T264-480q0 48 19.5 89t52.5 70v-63h72v192H216Zm336-10v-75q63-23 103.5-77.5T696-480q0-48-19.5-89T624-639v63h-72v-192h192v72h-74q45 40 71.5 95.5T768-480q0 101-61 177.5T552-202Z" />
 		</svg>

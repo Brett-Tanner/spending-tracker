@@ -57,7 +57,17 @@
 	}
 }
 
-@layer utilities {}
+@layer utilities {
+	@keyframes spin {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.spin {
+		animation: spin 1.5s linear infinite;
+	}
+}
 
 @layer components {
 	.transaction-row {
