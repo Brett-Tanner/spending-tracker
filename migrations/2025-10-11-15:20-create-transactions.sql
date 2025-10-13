@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS transactions (
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	amount INTEGER,
 	category_id INTEGER,
-	date TEXT,
+	date INTEGER,
 	description TEXT,
 	user_id INTEGER,
 

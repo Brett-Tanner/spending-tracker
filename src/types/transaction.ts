@@ -3,7 +3,7 @@ type TransactionStatus = "completed" | "loading" | "error";
 export interface RawTransaction {
 	amount: number;
 	category: string;
-	date: string;
+	date: number;
 	description: string;
 	id: number;
 	user: string;
