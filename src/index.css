@@ -1,8 +1,12 @@
 @layer base {
+	* {
+		box-sizing: border-box;
+	}
+
 	:root {
 		--accent-color: #f23d09;
 		--background-color: light-dark(#f9f5ee, #212121);
-		--border: 1px dashed var(--text-color);
+		--border: 1px solid var(--text-color);
 		--border-radius: 0.5rem;
 		--copy-size: 1.25rem;
 		--gap: 1rem;
@@ -10,7 +14,9 @@
 		--text-color: light-dark(#222222, #cccccc);
 
 		color-scheme: dark;
-		box-sizing: border-box;
+		display: flex;
+		justify-content: center;
+		align-items: flex-start;
 	}
 
 	body {
@@ -31,11 +37,9 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-
 		background-color: transparent;
-		border-radius: var(--rounded);
+		border-radius: var(--border-radius);
 		border: var(--border);
-		color: var(--color-primary);
 		cursor: pointer;
 		outline: none;
 		padding: 0.2rem 0.4rem;
@@ -55,6 +59,34 @@
 		margin: 0;
 		padding: 0;
 	}
+
+	input,
+	select {
+		background-color: transparent;
+		border: var(--border);
+		border-radius: var(--border-radius);
+		font-size: var(--copy-size);
+		outline: none;
+		padding: 0.2rem 0.4rem;
+
+		&:focus,
+		&:focus-visible,
+		&:active {
+			outline: 2px solid var(--color-secondary);
+		}
+	}
+
+	input[type="number"] {
+		appearance: textfield;
+		-moz-appearance: textfield;
+
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button {
+			appearance: none;
+			-webkit-appearance: none;
+			margin: 0;
+		}
+	}
 }
 
 @layer utilities {
@@ -70,6 +102,56 @@
 }
 
 @layer components {
+	main.transaction-list {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--gap);
+		padding: var(--padding);
+		width: 70ch;
+
+		@media (max-width: 768px) {
+			width: 100%;
+		}
+
+		h1 {
+			font-size: 1.4rem;
+			font-weight: 600;
+		}
+
+		input {
+			width: 100%;
+		}
+
+		section.transactions {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			width: 100%;
+		}
+	}
+
+	form.quick-input {
+		display: flex;
+		flex-wrap: nowrap;
+		gap: calc(var(--gap) / 4);
+		width: 100%;
+
+		input,
+		select {
+			width: 30%;
+			transition: width 0.2s ease-out;
+
+			&.active {
+				width: 50%;
+			}
+
+			&:only-child {
+				width: 100%;
+			}
+		}
+	}
+
 	.transaction-row {
 		display: grid;
 		grid-template-columns: 1fr 4fr 8fr 5fr 2fr;
@@ -79,10 +161,6 @@
 		border-bottom: var(--border);
 		padding-block: var(--padding);
 		width: 100%;
-
-		@media (min-width: 768px) {
-			width: 60%;
-		}
 
 		&:first-child {
 			border-top: var(--border);
