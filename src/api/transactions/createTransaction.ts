@@ -1,8 +1,10 @@
-import type { Input } from "../../types/form";
+import type { FormValues } from "../../types/form";
 
-interface CreateTransactionParams extends Record<Input, string> {
+interface CreateTransactionParams
+	extends Omit<FormValues, "date" | "category"> {
 	userId: number;
 	date?: number;
+	categoryId: number;
 }
 
 export async function createTransaction({
@@ -12,14 +14,18 @@ export async function createTransaction({
 	userId,
 	date = Date.now(),
 }: CreateTransactionParams) {
-	await fetch("/transactions", {
+	const response = await fetch("/transactions", {
 		method: "POST",
 		body: JSON.stringify({
-			description,
 			amount: parseInt(amount, 10),
-			categoryId: parseInt(categoryId, 10),
-			userId,
+			categoryId,
 			date,
+			description,
+			userId,
 		}),
 	});
+
+	if (response.status !== 200) throw new Error("Failed to create transaction");
+
+	return await response.json();
 }

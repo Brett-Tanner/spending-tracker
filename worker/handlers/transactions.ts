@@ -34,10 +34,10 @@ async function getTransactions(db: D1Database) {
 
 interface CreateTransactionBody {
 	amount: number;
-	date: Date;
+	categoryId: number;
+	date: number;
 	description: string;
-	categoryId: string;
-	userId: string;
+	userId: number;
 }
 
 async function createTransaction({ db, request }: HandleTransactionsParams) {
@@ -45,17 +45,17 @@ async function createTransaction({ db, request }: HandleTransactionsParams) {
 		INSERT INTO transactions
 		  (amount, date, description, user_id, category_id)
 		VALUES
-		  (?1, ?2, ?3, ?4, ?5)
+		  (?1, ?2, ?3, ?4, ?5);
 	`;
 	const { amount, date, description, categoryId, userId } =
 		(await request.json()) as CreateTransactionBody;
 
-	const { success, results } = await db
+	const { success, results, meta } = await db
 		.prepare(query)
 		.bind(amount, date, description, userId, categoryId)
 		.run();
 
-	if (success) return Response.json({ results, success });
+	if (success) return Response.json({ results, success, id: meta.last_row_id });
 
-	return Response.json({ success });
+	return Response.json({ status: 500 });
 }
