@@ -1,3 +1,4 @@
+import { handleCategories } from "./handlers/categories";
 import { handleTransactionList } from "./handlers/transactionList";
 
 export interface Env {
@@ -11,6 +12,10 @@ export default {
 
 		if (pathname.startsWith("/transactions")) {
 			return await handleTransactionList(db);
+		}
+
+		if (pathname.startsWith("/categories")) {
+			return await handleCategories(db);
 		}
 
 		return new Response(null, { status: 404 });
