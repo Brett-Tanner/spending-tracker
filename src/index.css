@@ -43,12 +43,20 @@
 		cursor: pointer;
 		outline: none;
 		padding: 0.2rem 0.4rem;
+		transition: transform 0.1s ease-in-out;
 
-		&:hover,
+		&:hover {
+			background-color: var(--text-color);
+			color: var(--background-color);
+		}
+
 		&:active {
-			background-color: var(--color-primary);
-			transform: scale(1.05);
-			transition: all 0.2s ease-in-out;
+			transform: scale(0.95);
+		}
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
 		}
 	}
 
