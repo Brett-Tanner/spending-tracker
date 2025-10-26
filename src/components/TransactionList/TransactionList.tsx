@@ -6,12 +6,12 @@ import type { Transaction } from "../../types/transaction";
 import { useMutation } from "@tanstack/react-query";
 import { createTransaction } from "../../api/transactions/createTransaction";
 import type { FormValues } from "../../types/form";
-import { FilterNav } from "./CategoryNav/CategoryNav";
+import { FilterMenu } from "./FilterMenu/FilterMenu";
 
 export function TransactionList() {
 	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [activeUser, setActiveUser] = useState({ name: "", id: 0 });
-	const [activeCategory, setActiveCategory] = useState("all");
+	const [activeCategory, setActiveCategory] = useState(0);
 	const {
 		transactions: fetchedTransactions,
 		categories,
@@ -61,7 +61,9 @@ export function TransactionList() {
 				description,
 				amount: parseInt(amount, 10),
 				category,
+				categoryId,
 				user: activeUser.name,
+				userId: activeUser.id,
 				date: new Date(),
 				status: "loading",
 			},
@@ -77,15 +79,16 @@ export function TransactionList() {
 	return (
 		<main className="transaction-list">
 			<h1>{`You are ${users[0].name}`}</h1>
-			<FilterNav
+			<FilterMenu
 				categories={categories}
+				activeCategory={activeCategory}
 				setActiveCategory={setActiveCategory}
 			/>
 			<QuickInput categories={categories} addTransaction={addTransaction} />
 			<section className="transactions">
 				{transactions
 					.filter(
-						(t) => activeCategory === "all" || t.category === activeCategory,
+						(t) => activeCategory === 0 || t.categoryId === activeCategory,
 					)
 					.map((t) => (
 						<TransactionRow key={t.id} transaction={t} />
