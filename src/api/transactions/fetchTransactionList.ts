@@ -10,6 +10,5 @@ export async function fetchTransactionList(): Promise<Transaction[]> {
 	return rawTransactions.map((t) => ({
 		...t,
 		date: new Date(t.date),
-		status: "completed",
 	}));
 }

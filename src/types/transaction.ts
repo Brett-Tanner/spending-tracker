@@ -1,5 +1,3 @@
-type TransactionStatus = "completed" | "loading" | "error";
-
 export interface RawTransaction {
 	amount: number;
 	category: string;
@@ -13,5 +11,4 @@ export interface RawTransaction {
 
 export interface Transaction extends Omit<RawTransaction, "date"> {
 	date: Date;
-	status: TransactionStatus;
 }

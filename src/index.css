@@ -33,7 +33,7 @@
 		font-size: var(--copy-size);
 	}
 
-	button {
+	button:not(.transaction-row) {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -200,10 +200,10 @@
 
 	.transaction-row {
 		display: grid;
-		grid-template-columns: 1fr 4fr 8fr 5fr 2fr;
+		grid-template-columns: 1fr 4fr 8fr 5fr;
 		gap: 0.25rem;
 		align-items: center;
-
+		cursor: pointer;
 		border-bottom: var(--border);
 		padding-block: var(--padding);
 		width: 100%;
@@ -230,23 +230,6 @@
 		.amount {
 			font-weight: 600;
 			text-align: right;
-		}
-
-		button {
-			aspect-ratio: 1 / 1;
-			border: var(--border);
-			border-radius: var(--border-radius);
-			cursor: pointer;
-			place-self: center;
-			width: 75%;
-
-			&:disabled {
-				cursor: not-allowed;
-			}
-
-			@media (min-width: 768px) {
-				width: 50%;
-			}
 		}
 	}
 }

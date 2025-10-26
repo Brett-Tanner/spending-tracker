@@ -27,7 +27,7 @@ export function TransactionList() {
 			if (!successfulTransaction) return;
 
 			setTransactions((prev) => [
-				{ ...successfulTransaction, id, status: "completed" },
+				{ ...successfulTransaction, id },
 				...prev.filter((t) => t.id !== 0),
 			]);
 		},
@@ -65,7 +65,6 @@ export function TransactionList() {
 				user: activeUser.name,
 				userId: activeUser.id,
 				date: new Date(),
-				status: "loading",
 			},
 		]);
 		mutate({
