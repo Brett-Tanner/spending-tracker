@@ -21,7 +21,9 @@ async function getTransactions(db: D1Database) {
 	const query = `
 	  SELECT
 		transactions.amount, transactions.date, transactions.description,
-		transactions.id, users.name AS user, categories.name AS category
+		transactions.id, transactions.category_id as categoryId,
+		transactions.user_id as userId, users.name AS user,
+		categories.name AS category
 	  FROM transactions
 	  INNER JOIN categories ON categories.id = category_id
 	  INNER JOIN users ON users.id = user_id
