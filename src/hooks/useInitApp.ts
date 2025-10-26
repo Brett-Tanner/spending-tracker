@@ -9,6 +9,7 @@ export function useInitApp() {
 		isLoading: isLoadingTransactions,
 		isError: isTransactionError,
 		error: transactionError,
+		refetch: refetchTransactions,
 	} = useQuery({
 		queryKey: ["transactions"],
 		queryFn: fetchTransactionList,
@@ -40,5 +41,13 @@ export function useInitApp() {
 	const error = `Transaction Error: ${transactionError?.message || ""},
 	     Category Error: ${categoryError?.message || ""}, User Error: ${userError?.message || ""}`.trim();
 
-	return { transactions, categories, users, isLoading, isError, error };
+	return {
+		transactions,
+		refetchTransactions,
+		categories,
+		users,
+		isLoading,
+		isError,
+		error,
+	};
 }

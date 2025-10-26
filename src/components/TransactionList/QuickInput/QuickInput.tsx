@@ -1,33 +1,40 @@
-import { FormEvent, useState, type ChangeEvent } from "react";
+import type { FormEvent, ChangeEvent } from "react";
+import { useState } from "react";
 import type { Category } from "../../../types/category";
 import { SaveIcon } from "../../shared/Icons/SaveIcon";
-import type { FormValues, Input } from "../../../types/form";
+import type { FormValues } from "../../../types/form";
 
 interface QuickInputProps {
 	categories: Category[];
 	addTransaction: (v: FormValues) => void;
 }
 
+const defaultValues: Omit<FormValues, "user" | "date"> = {
+	description: "",
+	amount: 0,
+	categoryId: 0,
+};
+
 export function QuickInput({ categories, addTransaction }: QuickInputProps) {
 	const [editing, setEditing] = useState(false);
-	const [activeInput, setActiveInput] = useState<Input>("description");
-	const [{ description, amount, category }, setValues] = useState<
-		Record<Input, string>
-	>({
-		description: "",
-		amount: "0",
-		category: "",
-	});
+	const [activeInput, setActiveInput] = useState<
+		"description" | "amount" | "category"
+	>("description");
+	const [{ description, amount, categoryId }, setValues] =
+		useState<Omit<FormValues, "user" | "date">>(defaultValues);
 
 	function onChange(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
-		setValues((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+		const { name, value } = e.target;
+		const transformedValue =
+			name !== "description" ? parseInt(value, 10) : value;
+		setValues((prev) => ({ ...prev, [name]: transformedValue }));
 	}
 
 	function onSubmit(e: FormEvent) {
 		e.preventDefault();
-		addTransaction({ description, amount, category });
+		addTransaction({ description, amount, categoryId });
 		setEditing(false);
-		setValues({ description: "", amount: "0", category: "" });
+		setValues(defaultValues);
 	}
 
 	return (
@@ -55,7 +62,7 @@ export function QuickInput({ categories, addTransaction }: QuickInputProps) {
 						onChange={onChange}
 						required
 						type="tel"
-						min="0"
+						min={0}
 						name="amount"
 						value={amount}
 					/>
@@ -63,23 +70,22 @@ export function QuickInput({ categories, addTransaction }: QuickInputProps) {
 						className={activeInput === "category" ? "active" : ""}
 						onFocus={() => setActiveInput("category")}
 						onChange={onChange}
-						name="category"
-						value={category}
+						name="categoryId"
+						value={categoryId}
 						required
 					>
-						<option value="" disabled>
+						<option value={0} disabled>
 							Category
 						</option>
 						{categories.map(({ name, id }) => (
-							<option key={id} value={name}>
+							<option key={id} value={id}>
 								{name}
 							</option>
 						))}
 					</select>
 					<button
 						type="submit"
-						aria-label="Save"
-						disabled={!description || !amount || !category}
+						disabled={!description || !amount || !categoryId}
 					>
 						<SaveIcon />
 					</button>

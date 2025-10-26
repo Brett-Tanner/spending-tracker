@@ -2,42 +2,28 @@ import { QuickInput } from "./QuickInput/QuickInput";
 import { TransactionRow } from "./TransactionRow/TransactionRow";
 import { useInitApp } from "../../hooks/useInitApp";
 import { useEffect, useState } from "react";
-import type { Transaction } from "../../types/transaction";
 import { useMutation } from "@tanstack/react-query";
 import { createTransaction } from "../../api/transactions/createTransaction";
 import type { FormValues } from "../../types/form";
 import { FilterMenu } from "./FilterMenu/FilterMenu";
 
 export function TransactionList() {
-	const [transactions, setTransactions] = useState<Transaction[]>([]);
 	const [activeUser, setActiveUser] = useState({ name: "", id: 0 });
 	const [activeCategory, setActiveCategory] = useState(0);
 	const {
-		transactions: fetchedTransactions,
+		transactions,
+		refetchTransactions,
 		categories,
 		users,
 		isError,
 		isLoading,
 		error,
 	} = useInitApp();
+
 	const { mutate } = useMutation({
 		mutationFn: createTransaction,
-		onSuccess: ({ id }) => {
-			const successfulTransaction = transactions.find((t) => t.id === 0);
-			if (!successfulTransaction) return;
-
-			setTransactions((prev) => [
-				{ ...successfulTransaction, id },
-				...prev.filter((t) => t.id !== 0),
-			]);
-		},
+		onSuccess: refetchTransactions,
 	});
-
-	useEffect(() => {
-		if (!fetchedTransactions) return;
-
-		setTransactions(fetchedTransactions);
-	}, [fetchedTransactions]);
 
 	useEffect(() => {
 		if (!users) return;
@@ -49,24 +35,9 @@ export function TransactionList() {
 	if (isLoading || !transactions || !categories || !users)
 		return <h1>Loading...</h1>;
 
-	function addTransaction({ description, amount, category }: FormValues) {
+	function addTransaction({ description, amount, categoryId }: FormValues) {
 		if (!activeUser || !categories) return;
 
-		const categoryId = categories.find((c) => c.name === category)
-			?.id as number;
-		setTransactions((prev) => [
-			...prev,
-			{
-				id: 0,
-				description,
-				amount: parseInt(amount, 10),
-				category,
-				categoryId,
-				user: activeUser.name,
-				userId: activeUser.id,
-				date: new Date(),
-			},
-		]);
 		mutate({
 			description,
 			amount,
