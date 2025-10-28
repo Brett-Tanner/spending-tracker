@@ -7,6 +7,7 @@ import { createTransaction } from "../../api/transactions/createTransaction";
 import type { FormValues } from "../../types/form";
 import { FilterMenu } from "./FilterMenu/FilterMenu";
 import { MonthlyBalance } from "./MonthlyBalance/MonthlyBalance";
+import { BubbleMenu } from "../BubbleMenu/BubbleMenu";
 
 export function TransactionList() {
 	const [activeUser, setActiveUser] = useState({ name: "", id: 0 });
@@ -70,6 +71,7 @@ export function TransactionList() {
 						<TransactionRow key={t.id} transaction={t} />
 					))}
 			</section>
+			<BubbleMenu />
 		</main>
 	);
 }
