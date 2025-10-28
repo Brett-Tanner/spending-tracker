@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { createTransaction } from "../../api/transactions/createTransaction";
 import type { FormValues } from "../../types/form";
 import { FilterMenu } from "./FilterMenu/FilterMenu";
+import { MonthlyBalance } from "./MonthlyBalance/MonthlyBalance";
 
 export function TransactionList() {
 	const [activeUser, setActiveUser] = useState({ name: "", id: 0 });
@@ -50,6 +51,7 @@ export function TransactionList() {
 	return (
 		<main className="transaction-list">
 			<h1>{`You are ${users[0].name}`}</h1>
+			<MonthlyBalance transactions={transactions} />
 			<FilterMenu
 				categories={categories}
 				activeCategory={activeCategory}
