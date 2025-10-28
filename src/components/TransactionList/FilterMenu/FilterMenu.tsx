@@ -5,12 +5,16 @@ interface FilterMenuProps {
 	categories: Category[];
 	activeCategory: number;
 	setActiveCategory: Dispatch<SetStateAction<number>>;
+	search: string;
+	setSearch: Dispatch<SetStateAction<string>>;
 }
 
 export function FilterMenu({
 	categories,
 	activeCategory,
 	setActiveCategory,
+	search,
+	setSearch,
 }: FilterMenuProps) {
 	return (
 		<details className="filter-menu">
@@ -31,6 +35,12 @@ export function FilterMenu({
 					{name}
 				</button>
 			))}
+			<input
+				type="search"
+				placeholder="Search"
+				value={search}
+				onChange={(e) => setSearch(e.target.value)}
+			/>
 		</details>
 	);
 }

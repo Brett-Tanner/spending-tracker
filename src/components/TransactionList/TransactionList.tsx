@@ -10,6 +10,7 @@ import { FilterMenu } from "./FilterMenu/FilterMenu";
 export function TransactionList() {
 	const [activeUser, setActiveUser] = useState({ name: "", id: 0 });
 	const [activeCategory, setActiveCategory] = useState(0);
+	const [search, setSearch] = useState("");
 	const {
 		transactions,
 		refetchTransactions,
@@ -53,6 +54,8 @@ export function TransactionList() {
 				categories={categories}
 				activeCategory={activeCategory}
 				setActiveCategory={setActiveCategory}
+				search={search}
+				setSearch={setSearch}
 			/>
 			<QuickInput categories={categories} addTransaction={addTransaction} />
 			<section className="transactions">
@@ -60,6 +63,7 @@ export function TransactionList() {
 					.filter(
 						(t) => activeCategory === 0 || t.categoryId === activeCategory,
 					)
+					.filter((t) => t.description.includes(search))
 					.map((t) => (
 						<TransactionRow key={t.id} transaction={t} />
 					))}
