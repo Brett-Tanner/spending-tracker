@@ -8,7 +8,7 @@
 		--background-color: light-dark(#f9f5ee, #212121);
 		--border: 1px solid var(--text-color);
 		--border-radius: 0.5rem;
-		--copy-size: 1.25rem;
+		--copy-size: clamp(16px, 2vw, 1.5rem);
 		--gap: 1rem;
 		--padding: 1rem;
 		--text-color: light-dark(#222222, #cccccc);
@@ -99,6 +99,25 @@
 			margin: 0;
 		}
 	}
+
+	dialog {
+		width: 50ch;
+		height: fit-content;
+		max-height: 80vh;
+		border: none;
+		border-radius: var(--border-radius);
+		box-shadow: 0px 0px 6px 0px var(--text-color);
+
+		@media (max-width: 768px) {
+			width: 95vw;
+			height: 95vh;
+		}
+
+		&::backdrop {
+			background-color: rgba(0, 0, 0, 0.5);
+			backdrop-filter: blur(2px);
+		}
+	}
 }
 
 @layer utilities {
@@ -130,7 +149,7 @@
 			width: 100%;
 		}
 
-		h1 {
+		>h1 {
 			font-size: 1.4rem;
 			font-weight: 600;
 		}
@@ -299,6 +318,26 @@
 
 		&:hover {
 			background-color: var(--text-color);
+		}
+	}
+
+	.full-transaction-form {
+		display: flex;
+		flex-flow: column nowrap;
+		justify-content: center;
+		align-items: stretch;
+		gap: var(--gap);
+		width: 100%;
+		height: 100%;
+
+		h1 {
+			text-align: center;
+			font-size: calc(var(--copy-size) * 1.5);
+			font-weight: 600;
+		}
+
+		button[type="submit"] {
+			padding-block: calc(var(--padding) / 2);
 		}
 	}
 }

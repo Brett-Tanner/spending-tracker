@@ -1,16 +1,29 @@
 import { useState } from "react";
 import { Womby } from "../shared/Icons/Womby";
-import { AddTransaction } from "./Items/AddTransaction";
+import {
+	AddTransactionButton,
+	type AddTransactionProps,
+} from "./Items/AddTransaction";
 import { ThemeToggle } from "./Items/ThemeToggle";
 
-export function BubbleMenu() {
+interface BubbleMenuProps extends AddTransactionProps { }
+
+export function BubbleMenu({
+	categories,
+	users,
+	addTransaction,
+}: BubbleMenuProps) {
 	const [open, setOpen] = useState(false);
 
 	return (
 		<>
 			{open && (
 				<>
-					<AddTransaction />
+					<AddTransactionButton
+						categories={categories}
+						users={users}
+						addTransaction={addTransaction}
+					/>
 					<ThemeToggle />
 				</>
 			)}

@@ -71,7 +71,11 @@ export function TransactionList() {
 						<TransactionRow key={t.id} transaction={t} />
 					))}
 			</section>
-			<BubbleMenu />
+			<BubbleMenu
+				categories={categories}
+				users={users}
+				addTransaction={addTransaction}
+			/>
 		</main>
 	);
 }
