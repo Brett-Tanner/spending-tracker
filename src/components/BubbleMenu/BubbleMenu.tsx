@@ -8,22 +8,14 @@ import { ThemeToggle } from "./Items/ThemeToggle";
 
 interface BubbleMenuProps extends AddTransactionProps { }
 
-export function BubbleMenu({
-	categories,
-	users,
-	addTransaction,
-}: BubbleMenuProps) {
+export function BubbleMenu({ dialogRef }: BubbleMenuProps) {
 	const [open, setOpen] = useState(false);
 
 	return (
 		<>
 			{open && (
 				<>
-					<AddTransactionButton
-						categories={categories}
-						users={users}
-						addTransaction={addTransaction}
-					/>
+					<AddTransactionButton dialogRef={dialogRef} />
 					<ThemeToggle />
 				</>
 			)}

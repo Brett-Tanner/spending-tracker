@@ -4,13 +4,12 @@ import type { Transaction } from "../../../types/transaction";
 
 interface TransactionRowProps {
 	transaction: Transaction;
+	onEdit: (transaction: Transaction) => void;
 }
 
-function onEdit() { }
-
-export function TransactionRow({ transaction }: TransactionRowProps) {
+export function TransactionRow({ transaction, onEdit }: TransactionRowProps) {
 	return (
-		<div onClick={onEdit} className="transaction-row">
+		<div onClick={() => onEdit(transaction)} className="transaction-row">
 			<p className="user">{transaction.user[0]}</p>
 			<p className="date">{shortDate(transaction.date)}</p>
 			<p className="description">{transaction.description}</p>

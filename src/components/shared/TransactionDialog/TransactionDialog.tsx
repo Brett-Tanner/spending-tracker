@@ -1,4 +1,5 @@
 import {
+	useEffect,
 	useState,
 	type ChangeEvent,
 	type FormEvent,
@@ -45,7 +46,11 @@ export function TransactionDialog({
 	users,
 }: TransactionDialogProps) {
 	const [{ description, amount, categoryId, userId, date }, setFormValues] =
-		useState<FormValues>(getInitialState(transaction));
+		useState<FormValues>(defaultState);
+
+	useEffect(() => {
+		setFormValues(getInitialState(transaction));
+	}, [transaction]);
 
 	const onSubmit = (e: FormEvent) => {
 		e.preventDefault();

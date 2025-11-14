@@ -1,16 +1,22 @@
 import { QuickInput } from "./QuickInput/QuickInput";
 import { TransactionRow } from "./TransactionRow/TransactionRow";
 import { useInitApp } from "../../hooks/useInitApp";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { createTransaction } from "../../api/transactions/createTransaction";
 import type { FormValues } from "../../types/form";
 import { FilterMenu } from "./FilterMenu/FilterMenu";
 import { MonthlyBalance } from "./MonthlyBalance/MonthlyBalance";
 import { BubbleMenu } from "../BubbleMenu/BubbleMenu";
+import { TransactionDialog } from "../shared/TransactionDialog/TransactionDialog";
+import type { Transaction } from "../../types/transaction";
+import type { User } from "../../types/user";
 
 export function TransactionList() {
-	const [activeUser, setActiveUser] = useState({ name: "", id: 0 });
+	const [activeUser, setActiveUser] = useState<User>({ name: "", id: 0 });
+	const [activeTransaction, setActiveTransaction] = useState<
+		Transaction | undefined
+	>(undefined);
 	const [activeCategory, setActiveCategory] = useState(0);
 	const [search, setSearch] = useState("");
 	const {
@@ -22,8 +28,9 @@ export function TransactionList() {
 		isLoading,
 		error,
 	} = useInitApp();
+	const dialogRef = useRef<HTMLDialogElement>(null);
 
-	const { mutate } = useMutation({
+	const { mutate: createMutation } = useMutation({
 		mutationFn: createTransaction,
 		onSuccess: refetchTransactions,
 	});
@@ -41,12 +48,22 @@ export function TransactionList() {
 	function addTransaction({ description, amount, categoryId }: FormValues) {
 		if (!activeUser || !categories) return;
 
-		mutate({
+		if (activeTransaction) {
+			// make a request to the UPDATE endpoint
+			return;
+		}
+
+		createMutation({
 			description,
 			amount,
 			categoryId,
 			userId: activeUser.id,
 		});
+	}
+
+	function editTransaction(transaction: Transaction) {
+		setActiveTransaction(transaction);
+		dialogRef.current?.showModal();
 	}
 
 	return (
@@ -68,13 +85,20 @@ export function TransactionList() {
 					)
 					.filter((t) => t.description.includes(search))
 					.map((t) => (
-						<TransactionRow key={t.id} transaction={t} />
+						<TransactionRow
+							key={t.id}
+							transaction={t}
+							onEdit={editTransaction}
+						/>
 					))}
 			</section>
-			<BubbleMenu
+			<BubbleMenu dialogRef={dialogRef} />
+			<TransactionDialog
+				ref={dialogRef}
 				categories={categories}
 				users={users}
-				addTransaction={addTransaction}
+				submitCallback={addTransaction}
+				transaction={activeTransaction}
 			/>
 		</main>
 	);

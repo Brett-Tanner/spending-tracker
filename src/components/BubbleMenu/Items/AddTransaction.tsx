@@ -1,24 +1,12 @@
-import { useRef } from "react";
+import type { RefObject } from "react";
 import { PlusIcon } from "../../shared/Icons/PlusIcon";
 import { BubbleMenuItem } from "./BubbleMenuItem";
-import { TransactionDialog } from "../../shared/TransactionDialog/TransactionDialog";
-import type { Category } from "../../../types/category";
-import type { User } from "../../../types/user";
-import type { FormValues } from "../../../types/form";
 
-interface AddTransactionProps {
-	categories: Category[];
-	users: User[];
-	addTransaction: (v: FormValues) => void;
+export interface AddTransactionProps {
+	dialogRef: RefObject<HTMLDialogElement | null>;
 }
 
-export function AddTransactionButton({
-	categories,
-	users,
-	addTransaction,
-}: AddTransactionProps) {
-	const dialogRef = useRef<HTMLDialogElement>(null);
-
+export function AddTransactionButton({ dialogRef }: AddTransactionProps) {
 	const onClick = () => {
 		if (!dialogRef.current) return;
 
@@ -30,12 +18,6 @@ export function AddTransactionButton({
 			<BubbleMenuItem order={2} onClick={onClick}>
 				<PlusIcon />
 			</BubbleMenuItem>
-			<TransactionDialog
-				ref={dialogRef}
-				categories={categories}
-				users={users}
-				submitCallback={addTransaction}
-			/>
 		</>
 	);
 }
