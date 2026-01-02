@@ -15,8 +15,11 @@ export function BubbleMenu({ dialogRef }: BubbleMenuProps) {
 		<>
 			{open && (
 				<>
-					<AddTransactionButton dialogRef={dialogRef} />
-					<ThemeToggle />
+					<AddTransactionButton
+						dialogRef={dialogRef}
+						setBubblemenuOpen={setOpen}
+					/>
+					<ThemeToggle setBubblemenuOpen={setOpen} />
 				</>
 			)}
 

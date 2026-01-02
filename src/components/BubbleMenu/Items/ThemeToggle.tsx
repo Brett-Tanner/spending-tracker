@@ -1,15 +1,20 @@
-import { useState } from "react";
+import { useState, type Dispatch, type SetStateAction } from "react";
 import { currentTheme, toggleTheme } from "../../../lib/theme";
 import { DarkIcon } from "../../shared/Icons/DarkIcon";
 import { LightIcon } from "../../shared/Icons/LightIcon";
 import { BubbleMenuItem } from "./BubbleMenuItem";
 
-export function ThemeToggle() {
+interface ThemeToggleProps {
+	setBubblemenuOpen: Dispatch<SetStateAction<boolean>>;
+}
+
+export function ThemeToggle({ setBubblemenuOpen }: ThemeToggleProps) {
 	const [theme, setTheme] = useState(currentTheme());
 
 	const onClick = () => {
 		toggleTheme();
 		setTheme((prev) => (prev === "dark" ? "light" : "dark"));
+		setBubblemenuOpen(false);
 	};
 
 	return (
