@@ -12,6 +12,8 @@ export async function handleTransactions({
 			return getTransactions(db);
 		case "POST":
 			return createTransaction({ db, request });
+		case "PATCH":
+			return updateTransaction({ db, request });
 		default:
 			return new Response(null, { status: 404 });
 	}
@@ -58,6 +60,35 @@ async function createTransaction({ db, request }: HandleTransactionsParams) {
 		.run();
 
 	if (success) return Response.json({ results, success, id: meta.last_row_id });
+
+	return Response.json({ status: 500 });
+}
+
+interface UpdateTransactionBody extends CreateTransactionBody {
+	id: number;
+}
+
+async function updateTransaction({ db, request }: HandleTransactionsParams) {
+	const updateTransactionQuery = `
+		UPDATE transactions
+		SET amount = ?1, date = ?2, description = ?3, user_id = ?4, category_id = ?5
+		WHERE id = ?6;
+	`;
+	const { id, ...body } = (await request.json()) as UpdateTransactionBody;
+
+	const { success, results } = await db
+		.prepare(updateTransactionQuery)
+		.bind(
+			body.amount,
+			body.date,
+			body.description,
+			body.userId,
+			body.categoryId,
+			id,
+		)
+		.run();
+
+	if (success) return Response.json({ results, success, id });
 
 	return Response.json({ status: 500 });
 }

@@ -11,6 +11,7 @@ import { BubbleMenu } from "../BubbleMenu/BubbleMenu";
 import { TransactionDialog } from "../shared/TransactionDialog/TransactionDialog";
 import type { Transaction } from "../../types/transaction";
 import type { User } from "../../types/user";
+import { updateTransaction } from "../../api/transactions/updateTransaction";
 
 export function TransactionList() {
 	const [activeUser, setActiveUser] = useState<User>({ name: "", id: 0 });
@@ -32,6 +33,10 @@ export function TransactionList() {
 
 	const { mutate: createMutation } = useMutation({
 		mutationFn: createTransaction,
+		onSuccess: refetchTransactions,
+	});
+	const { mutate: updateMutation } = useMutation({
+		mutationFn: updateTransaction,
 		onSuccess: refetchTransactions,
 	});
 
@@ -56,7 +61,14 @@ export function TransactionList() {
 		const parsedDate = date ? Date.parse(date) : undefined;
 
 		if (activeTransaction) {
-			// make a request to the UPDATE endpoint
+			updateMutation({
+				id: activeTransaction.id,
+				description,
+				amount,
+				categoryId,
+				date: parsedDate,
+				userId: activeUser.id,
+			});
 			return;
 		}
 

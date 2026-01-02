@@ -1,6 +1,6 @@
 import type { FormValues } from "../../types/form";
 
-interface CreateTransactionParams
+export interface CreateTransactionParams
 	extends Omit<FormValues, "date" | "category"> {
 	userId: number;
 	date?: number;
