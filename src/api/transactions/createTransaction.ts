@@ -17,7 +17,7 @@ export async function createTransaction({
 	const response = await fetch("/transactions", {
 		method: "POST",
 		body: JSON.stringify({
-			amount: parseInt(amount, 10),
+			amount,
 			categoryId,
 			date,
 			description,

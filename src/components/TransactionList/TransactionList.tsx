@@ -45,8 +45,15 @@ export function TransactionList() {
 	if (isLoading || !transactions || !categories || !users)
 		return <h1>Loading...</h1>;
 
-	function addTransaction({ description, amount, categoryId }: FormValues) {
+	function addTransaction({
+		description,
+		amount,
+		categoryId,
+		date,
+	}: FormValues) {
 		if (!activeUser || !categories) return;
+
+		const parsedDate = date ? Date.parse(date) : undefined;
 
 		if (activeTransaction) {
 			// make a request to the UPDATE endpoint
@@ -57,6 +64,7 @@ export function TransactionList() {
 			description,
 			amount,
 			categoryId,
+			date: parsedDate,
 			userId: activeUser.id,
 		});
 	}
